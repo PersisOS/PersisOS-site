@@ -512,22 +512,11 @@
         setInterval(updateClock, 1000);
 
         // --- Typed terminal line ---
-        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const typedEl = document.getElementById("typedLine");
         const fullText = "apt install persisos";
 
-        if (reduceMotion) {
-            typedEl.textContent = fullText;
-        } else {
-            let i = 0;
-            (function typeChar() {
-                typedEl.textContent = fullText.slice(0, i);
-                i++;
-                if (i <= fullText.length) {
-                    setTimeout(typeChar, 55);
-                }
-            })();
-        }
+        typedEl.textContent = fullText;
+
 
         // --- Footer year ---
         document.getElementById("year").textContent = `© ${new Date().getFullYear()}`;
