@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PersisOS — Coming Soon</title>
-    <meta name="description" content="PersisOS is a Debian-based, open source Linux desktop. Coming soon.">
+    <title>PersisOS</title>
+    <meta name="description" content="PersisOS is a Debian-based, open source Linux desktop.">
     <link rel="icon" href="./persisos.svg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,18 +16,22 @@
 
     <style>
         :root {
-            --bg-0: #07080b;
-            --bg-1: #0e1015;
-            --bg-2: #15181f;
-            --panel-border: rgba(255, 255, 255, .09);
+            --bg-0: #22252a;
+            --bg-1: #2a2e34;
+            --bg-2: #32363d;
+            --panel: #2c2f35;
+            --panel-border: #1b1d21;
+            --hairline: #3a3e45;
             --violet: #8b7bff;
             --violet-dim: #4c3f99;
-            --green: #7ee787;
-            --text-0: #f3f4f8;
-            --text-1: #a7aebd;
-            --text-2: #656d80;
+            --green: #8bd49c;
+            --red: #e0645a;
+            --text-0: #f1f2f5;
+            --text-1: #9aa1ac;
+            --text-2: #666c76;
             --mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
             --sans: 'Inter', 'Segoe UI', Arial, sans-serif;
+            --radius: 3px;
         }
 
         * {
@@ -45,8 +49,7 @@
             font-family: var(--sans);
             color: var(--text-0);
             background:
-                radial-gradient(ellipse 900px 500px at 50% -10%, rgba(139, 123, 255, .16), transparent 60%),
-                radial-gradient(circle, rgba(255, 255, 255, .045) 1px, transparent 1px) 0 0/24px 24px,
+                radial-gradient(circle, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/22px 22px,
                 var(--bg-0);
             display: flex;
             flex-direction: column;
@@ -61,67 +64,116 @@
             font-family: inherit;
         }
 
-        /* Top chrome bar — mimics a desktop titlebar */
+        svg {
+            display: block;
+        }
 
-        .chrome-bar {
+        /* ============ XFCE-style top panel ============ */
+
+        .xfce-panel {
             position: sticky;
             top: 0;
             z-index: 10;
             width: 100%;
-            height: 46px;
+            height: 34px;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            background: rgba(14, 16, 21, .72);
-            backdrop-filter: blur(10px);
+            align-items: stretch;
+            background: var(--panel);
             border-bottom: 1px solid var(--panel-border);
             font-family: var(--mono);
-            font-size: .78rem;
+            font-size: .74rem;
+            color: var(--text-1);
+        }
+
+        .panel-btn {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 0 12px;
+            background: transparent;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            transition: background .12s;
+        }
+
+        .panel-btn:hover {
+            background: rgba(255, 255, 255, .06);
+        }
+
+        .whisker-btn {
+            color: var(--text-0);
+            font-weight: 500;
+            border-right: 1px solid var(--hairline);
+        }
+
+        .whisker-btn img {
+            width: 16px;
+            height: 16px;
+        }
+
+        .panel-launchers {
+            display: flex;
+            align-items: stretch;
+            border-right: 1px solid var(--hairline);
+        }
+
+        .panel-launchers .panel-btn {
+            padding: 0 10px;
             color: var(--text-2);
         }
 
-        .chrome-lights {
-            display: flex;
-            gap: 7px;
+        .panel-launchers svg {
+            width: 15px;
+            height: 15px;
         }
 
-        .chrome-lights span {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: block;
+        .panel-spacer {
+            flex: 1;
         }
 
-        .chrome-lights span:nth-child(1) {
-            background: #ff5f57;
-        }
-
-        .chrome-lights span:nth-child(2) {
-            background: #febc2e;
-        }
-
-        .chrome-lights span:nth-child(3) {
-            background: #28c840;
-        }
-
-        .chrome-title {
+        .panel-tray {
             display: flex;
             align-items: center;
-            gap: 10px;
-            letter-spacing: .02em;
+            gap: 14px;
+            padding: 0 14px;
+            border-left: 1px solid var(--hairline);
         }
 
-        .chrome-title strong {
-            color: var(--text-1);
-            font-weight: 500;
+        .panel-tray svg {
+            width: 15px;
+            height: 15px;
+            color: var(--text-2);
         }
 
-        .chrome-clock {
+        .pager {
+            display: grid;
+            grid-template-columns: repeat(2, 9px);
+            grid-template-rows: repeat(2, 9px);
+            gap: 2px;
+            padding: 0 12px;
+            border-left: 1px solid var(--hairline);
+            align-self: center;
+        }
+
+        .pager span {
+            background: var(--hairline);
+        }
+
+        .pager span.active {
+            background: var(--violet);
+        }
+
+        .panel-clock {
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            border-left: 1px solid var(--hairline);
+            color: var(--text-0);
             font-variant-numeric: tabular-nums;
         }
 
-        /* Main */
+        /* ============ Main ============ */
 
         main {
             width: 100%;
@@ -131,14 +183,14 @@
 
         .container {
             width: min(880px, 92%);
-            padding: 72px 0 56px;
+            padding: 68px 0 56px;
             text-align: center;
         }
 
         .eyebrow {
             font-family: var(--mono);
             font-size: .72rem;
-            letter-spacing: .18em;
+            letter-spacing: .16em;
             text-transform: uppercase;
             color: var(--text-2);
             margin-bottom: 22px;
@@ -173,23 +225,6 @@
             margin: 0 auto 30px;
         }
 
-        .terminal-line {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-family: var(--mono);
-            font-size: .92rem;
-            color: var(--green);
-            background: var(--bg-1);
-            border: 1px solid var(--panel-border);
-            border-radius: 8px;
-            padding: 10px 16px;
-            margin-bottom: 46px;
-        }
-
-        .terminal-line .prompt {
-            color: var(--text-2);
-        }
 
         .terminal-line .typed::after {
             content: '';
@@ -215,45 +250,78 @@
             }
         }
 
-        /* Window / screenshot viewer */
-
         .window {
             position: relative;
             width: 100%;
-            border-radius: 14px;
+            border-radius: var(--radius);
             overflow: hidden;
             background: var(--bg-1);
             border: 1px solid var(--panel-border);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, .5);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, .35);
             text-align: left;
         }
 
         .window-titlebar {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 10px 14px;
-            background: var(--bg-2);
+            gap: 8px;
+            padding-left: 10px;
+            height: 34px;
+            background: linear-gradient(var(--bg-2), var(--panel));
             border-bottom: 1px solid var(--panel-border);
         }
 
-        .window-titlebar .chrome-lights span {
-            width: 9px;
-            height: 9px;
+        .window-titlebar img {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
         }
 
         .window-filename {
             font-family: var(--mono);
             font-size: .76rem;
-            color: var(--text-2);
+            color: var(--text-1);
             flex: 1;
-            text-align: center;
         }
 
         .window-counter {
             font-family: var(--mono);
-            font-size: .72rem;
+            font-size: .7rem;
             color: var(--text-2);
+            padding-right: 10px;
+        }
+
+        .window-controls {
+            display: flex;
+            height: 100%;
+        }
+
+        .window-controls button {
+            width: 32px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            border-left: 1px solid var(--panel-border);
+            color: var(--text-2);
+            cursor: default;
+        }
+
+        .window-controls button svg {
+            width: 10px;
+            height: 10px;
+        }
+
+        .window-controls button:hover {
+            background: rgba(255, 255, 255, .07);
+            color: var(--text-0);
+        }
+
+        .window-controls button.close:hover {
+            background: var(--red);
+            color: #2a1210;
         }
 
         .slider {
@@ -270,7 +338,7 @@
             height: 100%;
             object-fit: cover;
             opacity: 0;
-            transition: opacity .8s ease;
+            transition: opacity .6s ease;
         }
 
         .slide.active {
@@ -279,21 +347,22 @@
 
         .window-footer {
             display: flex;
+            align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 14px;
-            background: var(--bg-2);
+            padding: 10px;
+            background: var(--panel);
             border-top: 1px solid var(--panel-border);
         }
 
         .seg-dot {
-            width: 22px;
+            width: 20px;
             height: 4px;
-            border-radius: 2px;
+            border-radius: 1px;
             border: none;
-            background: rgba(255, 255, 255, .15);
+            background: var(--hairline);
             cursor: pointer;
-            transition: background .25s;
+            transition: background .2s;
         }
 
         .seg-dot.active {
@@ -301,74 +370,95 @@
         }
 
         .seg-dot:focus-visible,
-        .button:focus-visible {
+        .button:focus-visible,
+        .panel-btn:focus-visible {
             outline: 2px solid var(--violet);
             outline-offset: 2px;
         }
 
-        /* CTA */
+        /* ============ CTA ============ */
 
         .buttons {
             margin-top: 44px;
+            margin-bottom: 44px;
         }
 
         .button {
             display: inline-flex;
             align-items: center;
+            margin-top: 6px;
+            margin-bottom: 6px;
             gap: 8px;
-            padding: 14px 30px;
-            border-radius: 10px;
+            padding: 12px 26px;
+            border-radius: var(--radius);
             background: var(--violet);
-            color: #0c0a17;
+            color: #17142b;
             text-decoration: none;
             font-weight: 600;
             font-size: .95rem;
-            transition: transform .2s, background .2s;
+            border: 1px solid var(--violet);
+            transition: background .15s, color .15s;
         }
 
         .button:hover {
-            transform: translateY(-2px);
-            background: #9d8fff;
+            background: var(--bg-1);
+            color: var(--violet);
         }
 
-        /* Footer dock */
+        /* ============ Bottom taskbar / footer ============ */
 
         footer {
             width: 100%;
             display: flex;
             justify-content: center;
-            padding: 40px 0 56px;
+            margin-top: auto;
+            padding-top: 40px;
         }
 
         .dock {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
+            width: 100%;
+            border-top: 1px solid var(--panel-border);
+            background: var(--panel);
+        }
+
+        .dock-inner {
+            width: min(880px, 92%);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 12px 0;
         }
 
         .dock-item {
             font-family: var(--mono);
-            font-size: .76rem;
+            font-size: .74rem;
             color: var(--text-2);
-            border: 1px solid var(--panel-border);
+            border: 1px solid var(--hairline);
             background: var(--bg-1);
-            border-radius: 999px;
-            padding: 7px 14px;
+            border-radius: var(--radius);
+            padding: 6px 13px;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            margin: 3px 5px;
         }
 
         .dock-item.link:hover {
             color: var(--text-0);
-            border-color: var(--violet-dim);
+            border-color: var(--violet);
         }
 
         @media (max-width: 700px) {
-            .chrome-clock {
+            .panel-launchers {
                 display: none;
+            }
+
+            .panel-tray {
+                gap: 10px;
             }
 
             h1 {
@@ -404,19 +494,64 @@
 
 <body>
 
-    <div class="chrome-bar">
-        <div class="chrome-title">
-            <span class="chrome-lights"><span></span><span></span><span></span></span>
-            <strong>persisos</strong> — coming soon
+    <div class="xfce-panel">
+        <button class="panel-btn whisker-btn">
+            <img src="./persisos.svg" alt="">
+            Applications
+        </button>
+
+        <div class="panel-launchers">
+            <button class="panel-btn" aria-label="Files" title="Files">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M3 7a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7z" />
+                </svg>
+            </button>
+            <button class="panel-btn" aria-label="Terminal" title="Terminal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="3" y="4" width="18" height="16" rx="1.5" />
+                    <path d="M7 9l4 3-4 3M13 15h4" />
+                </svg>
+            </button>
+            <button class="panel-btn" aria-label="Web Browser" title="Web Browser">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <circle cx="12" cy="12" r="8.5" />
+                    <path
+                        d="M3.5 12h17M12 3.5c2.4 2.3 3.7 5.3 3.7 8.5s-1.3 6.2-3.7 8.5c-2.4-2.3-3.7-5.3-3.7-8.5S9.6 5.8 12 3.5z" />
+                </svg>
+            </button>
         </div>
-        <div class="chrome-clock" id="clock">00:00:00</div>
+
+        <div class="panel-spacer"></div>
+
+        <div class="panel-tray">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-label="Network">
+                <path d="M4 8.5a12 12 0 0 1 16 0M7 12a7.5 7.5 0 0 1 10 0M10 15.5a3 3 0 0 1 4 0" />
+                <circle cx="12" cy="19" r="1" fill="currentColor" stroke="none" />
+            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-label="Volume">
+                <path d="M4 10v4h3.5L12 17.5v-11L7.5 10H4z" />
+                <path d="M16 9.5a4 4 0 0 1 0 5" />
+            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-label="Battery">
+                <rect x="3" y="8" width="16" height="8" rx="1.2" />
+                <path d="M21 10.5v3" stroke-linecap="round" />
+                <rect x="5" y="10" width="9" height="4" fill="currentColor" stroke="none" />
+            </svg>
+        </div>
+
+        <div class="pager" role="group" aria-label="Workspaces">
+            <span class="active"></span><span></span><span></span><span></span>
+        </div>
+
+        <div class="panel-clock" id="clock">00:00:00</div>
     </div>
 
     <main>
         <div class="container">
 
-            <div class="eyebrow">Debian-based <span class="dot-sep">·</span> Open Source <span class="dot-sep">·</span>
-                In Development</div>
+            <div class="eyebrow">Easy to Use<span class="dot-sep">·</span>Debian-based<span class="dot-sep">·</span>
+                Open Source
+            </div>
 
             <h1>PersisOS<span class="cursor" aria-hidden="true">&nbsp;</span></h1>
 
@@ -425,10 +560,38 @@
                 No bloat, no lock-in — just a system you can actually read.
             </p>
 
+            <div class="buttons">
+                <a class="button" href="https://github.com/arshavirm/PersisOS/releases/tag/1.0-test">
+                    Download Latest 1.0-test amd64
+                </a>
+                <a class="button" href="https://github.com/arshavirm/PersisOS">
+                    View source on GitHub
+                </a>
+            </div>
+
             <div class="window">
                 <div class="window-titlebar">
-                    <span class="chrome-lights"><span></span><span></span><span></span></span>
+                    <img src="./persisos.svg" alt="">
+                    <span class="window-filename">desktop-preview.png — Image Viewer</span>
                     <span class="window-counter" id="windowCounter">1 / 3</span>
+                    <div class="window-controls">
+                        <button aria-label="Minimize" tabindex="-1">
+                            <svg viewBox="0 0 10 10">
+                                <path d="M1 8h8" stroke="currentColor" stroke-width="1.3" />
+                            </svg>
+                        </button>
+                        <button aria-label="Maximize" tabindex="-1">
+                            <svg viewBox="0 0 10 10">
+                                <rect x="1.5" y="1.5" width="7" height="7" fill="none" stroke="currentColor"
+                                    stroke-width="1.3" />
+                            </svg>
+                        </button>
+                        <button class="close" aria-label="Close" tabindex="-1">
+                            <svg viewBox="0 0 10 10">
+                                <path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="currentColor" stroke-width="1.3" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 <div class="slider">
                     <img class="slide active" src="desktop1.png" alt="PersisOS desktop preview 1">
@@ -442,30 +605,24 @@
                 </div>
             </div>
 
-            <div class="buttons">
-                <a class="button" href="https://github.com/arshavirm/PersisOS">
-                    View source on GitHub ↗
-                </a>
-            </div>
-
         </div>
     </main>
 
     <footer>
         <div class="dock">
-            <a class="dock-item link" href="https://github.com/arshavirm/PersisOS">GitHub</a>
-            <span class="dock-item">Debian 13 base</span>
-            <span class="dock-item">Open Source</span>
-            <span class="dock-item" id="year">2026</span>
+            <div class="dock-inner">
+                <a class="dock-item link" href="https://github.com/arshavirm/PersisOS">GitHub</a>
+                <span class="dock-item">Debian 13 base</span>
+                <span class="dock-item">Open Source</span>
+                <span class="dock-item" id="year">2026</span>
+            </div>
         </div>
     </footer>
 
     <script>
-        // --- Slide viewer ---
         const slides = document.querySelectorAll(".slide");
         const dots = document.querySelectorAll(".seg-dot");
         const counterLabel = document.getElementById("windowCounter");
-        const filenames = Array.from(slides).map(s => s.getAttribute("src"));
 
         let current = 0;
         let timer;
@@ -500,7 +657,6 @@
 
         restartTimer();
 
-        // --- Live clock in chrome bar ---
         const clockEl = document.getElementById("clock");
 
         function updateClock() {
@@ -511,14 +667,7 @@
         updateClock();
         setInterval(updateClock, 1000);
 
-        // --- Typed terminal line ---
-        const typedEl = document.getElementById("typedLine");
-        const fullText = "apt install persisos";
 
-        typedEl.textContent = fullText;
-
-
-        // --- Footer year ---
         document.getElementById("year").textContent = `© ${new Date().getFullYear()}`;
     </script>
 
