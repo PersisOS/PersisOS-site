@@ -2,674 +2,308 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PersisOS</title>
-    <meta name="description" content="PersisOS is a Debian-based, open source Linux desktop.">
-    <link rel="icon" href="./persisos.svg">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap"
-        rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PersisOS v2.0 — Modern. Elegant. Open Source.</title>
+    <meta name="description"
+        content="PersisOS v2.0 is a Debian 13 (Trixie) Linux distribution with KDE Plasma & Headless Server for amd64/arm64." />
+    <meta name="author" content="arshavir" />
+    <meta name="theme-color" content="#7c3aed" />
+    <link rel="icon" type="image/svg+xml" href="./persisos.svg" />
 
     <style>
-        :root {
-            --bg-0: #22252a;
-            --bg-1: #2a2e34;
-            --bg-2: #32363d;
-            --panel: #2c2f35;
-            --panel-border: #1b1d21;
-            --hairline: #3a3e45;
-            --violet: #8b7bff;
-            --violet-dim: #4c3f99;
-            --green: #8bd49c;
-            --red: #e0645a;
-            --text-0: #f1f2f5;
-            --text-1: #9aa1ac;
-            --text-2: #666c76;
-            --mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
-            --sans: 'Inter', 'Segoe UI', Arial, sans-serif;
-            --radius: 3px;
-        }
-
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
         }
 
         body {
-            min-height: 100vh;
-            font-family: var(--sans);
-            color: var(--text-0);
-            background:
-                radial-gradient(circle, rgba(255, 255, 255, .04) 1px, transparent 1px) 0 0/22px 22px,
-                var(--bg-0);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        a {
-            color: inherit;
-        }
-
-        button {
-            font-family: inherit;
-        }
-
-        svg {
-            display: block;
-        }
-
-        /* ============ XFCE-style top panel ============ */
-
-        .xfce-panel {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            width: 100%;
-            height: 34px;
-            display: flex;
-            align-items: stretch;
-            background: var(--panel);
-            border-bottom: 1px solid var(--panel-border);
-            font-family: var(--mono);
-            font-size: .74rem;
-            color: var(--text-1);
-        }
-
-        .panel-btn {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            padding: 0 12px;
-            background: transparent;
-            border: none;
-            color: inherit;
-            cursor: pointer;
-            transition: background .12s;
-        }
-
-        .panel-btn:hover {
-            background: rgba(255, 255, 255, .06);
-        }
-
-        .whisker-btn {
-            color: var(--text-0);
-            font-weight: 500;
-            border-right: 1px solid var(--hairline);
-        }
-
-        .whisker-btn img {
-            width: 16px;
-            height: 16px;
-        }
-
-        .panel-launchers {
-            display: flex;
-            align-items: stretch;
-            border-right: 1px solid var(--hairline);
-        }
-
-        .panel-launchers .panel-btn {
-            padding: 0 10px;
-            color: var(--text-2);
-        }
-
-        .panel-launchers svg {
-            width: 15px;
-            height: 15px;
-        }
-
-        .panel-spacer {
-            flex: 1;
-        }
-
-        .panel-tray {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 0 14px;
-            border-left: 1px solid var(--hairline);
-        }
-
-        .panel-tray svg {
-            width: 15px;
-            height: 15px;
-            color: var(--text-2);
-        }
-
-        .pager {
-            display: grid;
-            grid-template-columns: repeat(2, 9px);
-            grid-template-rows: repeat(2, 9px);
-            gap: 2px;
-            padding: 0 12px;
-            border-left: 1px solid var(--hairline);
-            align-self: center;
-        }
-
-        .pager span {
-            background: var(--hairline);
-        }
-
-        .pager span.active {
-            background: var(--violet);
-        }
-
-        .panel-clock {
-            display: flex;
-            align-items: center;
-            padding: 0 14px;
-            border-left: 1px solid var(--hairline);
-            color: var(--text-0);
-            font-variant-numeric: tabular-nums;
-        }
-
-        /* ============ Main ============ */
-
-        main {
-            width: 100%;
-            display: flex;
-            justify-content: center;
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            line-height: 1.6;
+            padding: 16px;
         }
 
         .container {
-            width: min(880px, 92%);
-            padding: 68px 0 56px;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        /* Header & Nav */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #7c3aed;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 28px;
+            height: 28px;
+        }
+
+        nav a {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-left: 14px;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: #7c3aed;
+        }
+
+        /* Hero */
+        .hero {
             text-align: center;
+            padding: 20px 0 35px;
         }
 
-        .eyebrow {
-            font-family: var(--mono);
-            font-size: .72rem;
-            letter-spacing: .16em;
-            text-transform: uppercase;
-            color: var(--text-2);
-            margin-bottom: 22px;
-        }
-
-        .eyebrow .dot-sep {
-            color: var(--violet);
-            margin: 0 8px;
+        .badge {
+            display: inline-block;
+            background: #ede9fe;
+            color: #7c3aed;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 12px;
         }
 
         h1 {
-            font-family: var(--mono);
-            font-weight: 700;
-            font-size: clamp(2.5rem, 5vw + 1rem, 4.25rem);
-            letter-spacing: -.02em;
-            margin-bottom: 20px;
-        }
-
-        h1 .cursor {
-            display: inline-block;
-            width: .5em;
-            background: var(--violet);
-            margin-left: 4px;
-            animation: blink 1.1s steps(1) infinite;
-        }
-
-        .subtitle {
-            color: var(--text-1);
-            font-size: 1.1rem;
-            line-height: 1.6;
-            max-width: 46ch;
-            margin: 0 auto 30px;
-        }
-
-
-        .terminal-line .typed::after {
-            content: '';
-            display: inline-block;
-            width: 8px;
-            height: 1em;
-            margin-left: 2px;
-            background: var(--green);
-            vertical-align: -2px;
-            animation: blink 1.1s steps(1) infinite;
-        }
-
-        @keyframes blink {
-
-            0%,
-            49% {
-                opacity: 1;
-            }
-
-            50%,
-            100% {
-                opacity: 0;
-            }
-        }
-
-        .window {
-            position: relative;
-            width: 100%;
-            border-radius: var(--radius);
-            overflow: hidden;
-            background: var(--bg-1);
-            border: 1px solid var(--panel-border);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, .35);
-            text-align: left;
-        }
-
-        .window-titlebar {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-left: 10px;
-            height: 34px;
-            background: linear-gradient(var(--bg-2), var(--panel));
-            border-bottom: 1px solid var(--panel-border);
-        }
-
-        .window-titlebar img {
-            width: 14px;
-            height: 14px;
-            flex-shrink: 0;
-        }
-
-        .window-filename {
-            font-family: var(--mono);
-            font-size: .76rem;
-            color: var(--text-1);
-            flex: 1;
-        }
-
-        .window-counter {
-            font-family: var(--mono);
-            font-size: .7rem;
-            color: var(--text-2);
-            padding-right: 10px;
-        }
-
-        .window-controls {
-            display: flex;
-            height: 100%;
-        }
-
-        .window-controls button {
-            width: 32px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            border: none;
-            border-left: 1px solid var(--panel-border);
-            color: var(--text-2);
-            cursor: default;
-        }
-
-        .window-controls button svg {
-            width: 10px;
-            height: 10px;
-        }
-
-        .window-controls button:hover {
-            background: rgba(255, 255, 255, .07);
-            color: var(--text-0);
-        }
-
-        .window-controls button.close:hover {
-            background: var(--red);
-            color: #2a1210;
-        }
-
-        .slider {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: #0a0a0d;
-        }
-
-        .slide {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            transition: opacity .6s ease;
-        }
-
-        .slide.active {
-            opacity: 1;
-        }
-
-        .window-footer {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px;
-            background: var(--panel);
-            border-top: 1px solid var(--panel-border);
-        }
-
-        .seg-dot {
-            width: 20px;
-            height: 4px;
-            border-radius: 1px;
-            border: none;
-            background: var(--hairline);
-            cursor: pointer;
-            transition: background .2s;
-        }
-
-        .seg-dot.active {
-            background: var(--violet);
-        }
-
-        .seg-dot:focus-visible,
-        .button:focus-visible,
-        .panel-btn:focus-visible {
-            outline: 2px solid var(--violet);
-            outline-offset: 2px;
-        }
-
-        /* ============ CTA ============ */
-
-        .buttons {
-            margin-top: 44px;
-            margin-bottom: 44px;
-        }
-
-        .button {
-            display: inline-flex;
-            align-items: center;
-            margin-top: 6px;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
             margin-bottom: 6px;
-            gap: 8px;
-            padding: 12px 26px;
-            border-radius: var(--radius);
-            background: var(--violet);
-            color: #17142b;
-            text-decoration: none;
+        }
+
+        .slogan {
+            font-size: 1.15rem;
             font-weight: 600;
-            font-size: .95rem;
-            border: 1px solid var(--violet);
-            transition: background .15s, color .15s;
+            color: #7c3aed;
+            margin-bottom: 14px;
         }
 
-        .button:hover {
-            background: var(--bg-1);
-            color: var(--violet);
+        .desc {
+            color: #475569;
+            font-size: 0.98rem;
+            max-width: 580px;
+            margin: 0 auto 24px;
         }
 
-        /* ============ Bottom taskbar / footer ============ */
-
-        footer {
-            width: 100%;
+        /* Action Buttons */
+        .btn-group {
             display: flex;
             justify-content: center;
-            margin-top: auto;
-            padding-top: 40px;
-        }
-
-        .dock {
-            display: flex;
+            gap: 10px;
             flex-wrap: wrap;
-            justify-content: center;
-            width: 100%;
-            border-top: 1px solid var(--panel-border);
-            background: var(--panel);
         }
 
-        .dock-inner {
-            width: min(880px, 92%);
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 12px 0;
-        }
-
-        .dock-item {
-            font-family: var(--mono);
-            font-size: .74rem;
-            color: var(--text-2);
-            border: 1px solid var(--hairline);
-            background: var(--bg-1);
-            border-radius: var(--radius);
-            padding: 6px 13px;
+        .btn {
+            display: inline-block;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin: 3px 5px;
+            transition: opacity 0.2s;
+            text-align: center;
         }
 
-        .dock-item.link:hover {
-            color: var(--text-0);
-            border-color: var(--violet);
+        .btn:hover {
+            opacity: 0.9;
         }
 
-        @media (max-width: 700px) {
-            .panel-launchers {
-                display: none;
+        .btn-primary {
+            background: #7c3aed;
+            color: #fff;
+        }
+
+        .btn-dark {
+            background: #0f172a;
+            color: #fff;
+        }
+
+        .btn-donate {
+            background: #fdf2f8;
+            color: #db2777;
+            border: 1px solid #fbcfe8;
+        }
+
+        /* Features Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin: 35px 0;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .card h3 {
+            font-size: 1rem;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .card p {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        /* Terminal Box */
+        .terminal {
+            background: #0f172a;
+            color: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+            font-family: monospace;
+            font-size: 0.82rem;
+            overflow-x: auto;
+            margin-bottom: 35px;
+        }
+
+        .terminal .comment {
+            color: #64748b;
+        }
+
+        .terminal .cmd {
+            color: #a78bfa;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            font-size: 0.82rem;
+            color: #94a3b8;
+            border-top: 1px solid #e2e8f0;
+            padding: 20px 0;
+        }
+
+        footer a {
+            color: #7c3aed;
+            text-decoration: none;
+        }
+
+        /* Mobile */
+        @media (max-width: 500px) {
+            .btn-group {
+                flex-direction: column;
             }
 
-            .panel-tray {
+            .btn {
+                width: 100%;
+            }
+
+            header {
+                flex-direction: column;
                 gap: 10px;
             }
 
-            h1 {
-                font-size: 2.4rem;
-            }
-
-            .subtitle {
-                font-size: 1rem;
-            }
-
-            .button {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-
-            .cursor,
-            .terminal-line .typed::after {
-                animation: none;
-                opacity: 1;
-            }
-
-            .slide,
-            .button {
-                transition: none;
+            nav a {
+                margin: 0 8px;
             }
         }
     </style>
-
 </head>
 
 <body>
 
-    <div class="xfce-panel">
-        <button class="panel-btn whisker-btn">
-            <img src="./persisos.svg" alt="">
-            Applications
-        </button>
+    <div class="container">
+        <!-- Navbar -->
+        <header>
+            <a href="#" class="logo">
+                <img src="./persisos.svg" alt="PersisOS" onerror="this.style.display='none'" />
+                <span>PersisOS</span>
+            </a>
+            <nav>
+                <a href="#features">Features</a>
+                <a href="#build">Build</a>
+                <a href="https://github.com/arshavirm/PersisOS" target="_blank" rel="noopener">GitHub</a>
+            </nav>
+        </header>
 
-        <div class="panel-launchers">
-            <button class="panel-btn" aria-label="Files" title="Files">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <path d="M3 7a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7z" />
-                </svg>
-            </button>
-            <button class="panel-btn" aria-label="Terminal" title="Terminal">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <rect x="3" y="4" width="18" height="16" rx="1.5" />
-                    <path d="M7 9l4 3-4 3M13 15h4" />
-                </svg>
-            </button>
-            <button class="panel-btn" aria-label="Web Browser" title="Web Browser">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <circle cx="12" cy="12" r="8.5" />
-                    <path
-                        d="M3.5 12h17M12 3.5c2.4 2.3 3.7 5.3 3.7 8.5s-1.3 6.2-3.7 8.5c-2.4-2.3-3.7-5.3-3.7-8.5S9.6 5.8 12 3.5z" />
-                </svg>
-            </button>
-        </div>
-
-        <div class="panel-spacer"></div>
-
-        <div class="panel-tray">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-label="Network">
-                <path d="M4 8.5a12 12 0 0 1 16 0M7 12a7.5 7.5 0 0 1 10 0M10 15.5a3 3 0 0 1 4 0" />
-                <circle cx="12" cy="19" r="1" fill="currentColor" stroke="none" />
-            </svg>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-label="Volume">
-                <path d="M4 10v4h3.5L12 17.5v-11L7.5 10H4z" />
-                <path d="M16 9.5a4 4 0 0 1 0 5" />
-            </svg>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-label="Battery">
-                <rect x="3" y="8" width="16" height="8" rx="1.2" />
-                <path d="M21 10.5v3" stroke-linecap="round" />
-                <rect x="5" y="10" width="9" height="4" fill="currentColor" stroke="none" />
-            </svg>
-        </div>
-
-        <div class="pager" role="group" aria-label="Workspaces">
-            <span class="active"></span><span></span><span></span><span></span>
-        </div>
-
-        <div class="panel-clock" id="clock">00:00:00</div>
-    </div>
-
-    <main>
-        <div class="container">
-
-            <div class="eyebrow">Easy to Use<span class="dot-sep">·</span>Debian-based<span class="dot-sep">·</span>
-                Open Source
-            </div>
-
-            <h1>PersisOS<span class="cursor" aria-hidden="true">&nbsp;</span></h1>
-
-            <p class="subtitle">
-                A Linux desktop built for people who like to see how things work.
-                No bloat, no lock-in — just a system you can actually read.
+        <!-- Hero -->
+        <main class="hero">
+            <div class="badge">Debian 13 (Trixie)</div>
+            <h1>PersisOS v2.0</h1>
+            <p class="slogan">Modern. Elegant. Open Source.</p>
+            <p class="desc">
+                A lightweight operating system powered by KDE Plasma with minimal footprint, multi-arch support
+                (amd64/arm64), and a headless server edition.
             </p>
 
-            <div class="buttons">
-                <a class="button" href="https://github.com/arshavirm/PersisOS/releases/tag/1.0">
-                    Download Latest 1.0
+            <div class="btn-group">
+                <a href="https://github.com/arshavirm/PersisOS/releases/tag/2.0-test-2" target="_blank" rel="noopener"
+                    class="btn btn-primary">
+                    Download v2.0-test-2
                 </a>
-                <a class="button" href="https://github.com/arshavirm/PersisOS">
-                    View source on GitHub
+                <a href="https://github.com/arshavirm/PersisOS" target="_blank" rel="noopener" class="btn btn-dark">
+                    GitHub Repo
+                </a>
+                <a href="https://daramet.com/arshavirm" target="_blank" rel="noopener" class="btn btn-donate">
+                    Support on Daramet
                 </a>
             </div>
+        </main>
 
-            <div class="window">
-                <div class="window-titlebar">
-                    <img src="./persisos.svg" alt="">
-                    <span class="window-filename">desktop-preview.png — Image Viewer</span>
-                    <span class="window-counter" id="windowCounter">1 / 3</span>
-                    <div class="window-controls">
-                        <button aria-label="Minimize" tabindex="-1">
-                            <svg viewBox="0 0 10 10">
-                                <path d="M1 8h8" stroke="currentColor" stroke-width="1.3" />
-                            </svg>
-                        </button>
-                        <button aria-label="Maximize" tabindex="-1">
-                            <svg viewBox="0 0 10 10">
-                                <rect x="1.5" y="1.5" width="7" height="7" fill="none" stroke="currentColor"
-                                    stroke-width="1.3" />
-                            </svg>
-                        </button>
-                        <button class="close" aria-label="Close" tabindex="-1">
-                            <svg viewBox="0 0 10 10">
-                                <path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="currentColor" stroke-width="1.3" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                <div class="slider">
-                    <img class="slide active" src="desktop1.png" alt="PersisOS desktop preview 1">
-                    <img class="slide" src="desktop2.png" alt="PersisOS desktop preview 2">
-                    <img class="slide" src="desktop3.png" alt="PersisOS desktop preview 3">
-                </div>
-                <div class="window-footer" role="tablist" aria-label="Screenshot selector">
-                    <button class="seg-dot active" aria-label="Show screenshot 1" aria-pressed="true"></button>
-                    <button class="seg-dot" aria-label="Show screenshot 2" aria-pressed="false"></button>
-                    <button class="seg-dot" aria-label="Show screenshot 3" aria-pressed="false"></button>
-                </div>
+        <!-- Features -->
+        <section id="features" class="grid">
+            <div class="card">
+                <h3>KDE Plasma</h3>
+                <p>Clean and fluid modern desktop interface replacing the previous XFCE base.</p>
             </div>
-
-        </div>
-    </main>
-
-    <footer>
-        <div class="dock">
-            <div class="dock-inner">
-                <a class="dock-item link" href="https://github.com/arshavirm/PersisOS">GitHub</a>
-                <span class="dock-item">Debian 13 base</span>
-                <span class="dock-item">Open Source</span>
-                <span class="dock-item" id="year">2026</span>
+            <div class="card">
+                <h3>Debian 13 Base</h3>
+                <p>Built upon Debian Trixie for stable yet updated packages and kernel stack.</p>
             </div>
-        </div>
-    </footer>
+            <div class="card">
+                <h3>amd64 & arm64</h3>
+                <p>Fully supported across standard x86 computers and modern ARM64 devices.</p>
+            </div>
+            <div class="card">
+                <h3>Headless Server</h3>
+                <p>A stripped-down profile designed for lightweight virtualization and servers.</p>
+            </div>
+        </section>
 
-    <script>
-        const slides = document.querySelectorAll(".slide");
-        const dots = document.querySelectorAll(".seg-dot");
-        const counterLabel = document.getElementById("windowCounter");
+        <!-- Build Instructions -->
+        <section id="build" class="terminal">
+            <div class="comment"># 1. Clone the project</div>
+            <span class="cmd">git</span> clone https://github.com/arshavirm/PersisOS.git &amp;&amp; <span
+                class="cmd">cd</span> PersisOS<br><br>
+            <div class="comment"># 2. Build KDE Desktop ISO</div>
+            <span class="cmd">sudo python3</span> build.py --arch amd64 --desktop plasma<br><br>
+            <div class="comment"># 3. Build Headless Server Profile</div>
+            <span class="cmd">sudo python3</span> build.py --profile server
+        </section>
 
-        let current = 0;
-        let timer;
-
-        function showSlide(index) {
-            slides.forEach(s => s.classList.remove("active"));
-            dots.forEach(d => { d.classList.remove("active"); d.setAttribute("aria-pressed", "false"); });
-
-            slides[index].classList.add("active");
-            dots[index].classList.add("active");
-            dots[index].setAttribute("aria-pressed", "true");
-
-            counterLabel.textContent = `${index + 1} / ${slides.length}`;
-            current = index;
-        }
-
-        function nextSlide() {
-            showSlide((current + 1) % slides.length);
-        }
-
-        function restartTimer() {
-            clearInterval(timer);
-            timer = setInterval(nextSlide, 4500);
-        }
-
-        dots.forEach((dot, i) => {
-            dot.addEventListener("click", () => {
-                showSlide(i);
-                restartTimer();
-            });
-        });
-
-        restartTimer();
-
-        const clockEl = document.getElementById("clock");
-
-        function updateClock() {
-            const now = new Date();
-            const pad = n => String(n).padStart(2, "0");
-            clockEl.textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-        }
-        updateClock();
-        setInterval(updateClock, 1000);
-
-
-        document.getElementById("year").textContent = `© ${new Date().getFullYear()}`;
-    </script>
+        <!-- Footer -->
+        <footer>
+            <p>© 2026 PersisOS by <a href="https://github.com/arshavirm" target="_blank" rel="noopener">arshavir</a> —
+                100% Free & Open Source.</p>
+        </footer>
+    </div>
 
 </body>
 
